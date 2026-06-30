@@ -2,7 +2,7 @@
 	"name": "Google Search Context Menu",
 	"author": "Aeranos",
 	"description": "Adds 'Search using Google Search' to the context menu",
-	"version": "1.0.1",
+	"version": "1.2.0",
 	"icons": {
 		"48": "icons/48.png",
 		"96":"icons/96.png"
