@@ -1,11 +1,3 @@
-
-### ❤ Support ❤
-
-[![Patreon][patreon-badge]][patreon]
-[![Liberapay][liberapay-badge]][liberapay]
-[![Ko-Fi][kofi-badge]][kofi]
-----
-
 # <a href="url"><img src="https://user-images.githubusercontent.com/53261024/136673097-d0ab6bef-7239-42f9-aac2-b35152b70b48.png" align="center" height="100" width="100"></a> Google Search Context Menu for Microsoft Edge Extension
 
 Adds 'Search using Google Search' to Microsoft Edge context menu whenever any text is selected in the browser.
