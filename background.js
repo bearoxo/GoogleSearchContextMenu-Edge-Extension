@@ -1,28 +1,46 @@
-var browser = browser || chrome;
+const browser = globalThis.browser || globalThis.chrome;
+const locale = navigator.language || "en-US"; 
+const CONTEXT_MENU_ID = 'contextMenu_SearchWithGoogle';
 
-//onClick event handler 
-//Data for the search is issued to the event as the argument.
-function contextMenu_SearchWithGoogle_Clicked(searchStr, tab) {
-	
-	let text = searchStr.selectionText.trim();// "selectionText" contains the selected character string.
+const parts = locale.split('-');
+const hl = parts[0]; // e.g., "en"
+const gl = parts[1] ? parts[1].toLowerCase() : hl; // e.g., "us"
 
-	//Building the Google search URL.
-	//The selected character string is passed to Google as a URI-encoded string.
-	let uriEncodedStr = encodeURIComponent(text);
-	let searchUrl = 'https://www.google.com/search?q=' + uriEncodedStr;
+function buildSearchUrl(text) {
+	let url = `https://www.google.com/search?q=${encodeURIComponent(text)}`;
+	url += `&hl=${hl}`;
+  url += `&gl=${gl}`;
 
-	//Create a new tab
-	//Open the URL created above.
-	browser.tabs.create({ url: searchUrl });
+	return url
 }
 
-//Add item to context menu
-browser.contextMenus.create(
-	{
-		id: 'contextMenu_SearchWithGoogle',
-		title: 'Search "%s" using Google Search',//The selected character string is entered in the %s part.
-		contexts: ['selection'],//Only display extension item in the context menu when there's a text selected in the browser.
-		onclick: contextMenu_SearchWithGoogle_Clicked
-	}
-);
+function handleSearchSelection(info) {
+	const text = info?.selectionText?.trim();
 
+	if (!text) {
+		return;
+	}
+
+	browser.tabs.create({ url: buildSearchUrl(text) });
+}
+
+function setupContextMenu() {
+	browser.contextMenus.removeAll(() => {
+		browser.contextMenus.create({
+			id: CONTEXT_MENU_ID,
+			title: 'Search "%s" using Google Search',
+			contexts: ['selection']
+		});
+	});
+}
+
+browser.runtime?.onInstalled?.addListener(setupContextMenu);
+browser.runtime?.onStartup?.addListener(setupContextMenu);
+
+browser.contextMenus.onClicked.addListener((info, tab) => {
+	if (info.menuItemId === CONTEXT_MENU_ID) {
+		handleSearchSelection(info, tab);
+	}
+});
+
+setupContextMenu();
