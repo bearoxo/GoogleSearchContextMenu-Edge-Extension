@@ -2,17 +2,14 @@
 	"name": "Google Search Context Menu",
 	"author": "Aeranos",
 	"description": "Adds 'Search using Google Search' to the context menu",
-	"version": "1.1",
+	"version": "1.2",
 	"icons": {
 		"48": "icons/48.png",
 		"96":"icons/96.png"
 	},
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"background": {
-		"scripts": [
-			"background.js"
-		],
-		"persistent": true
+		"service_worker": "background.js"
 	},
 	"permissions": [
 		"contextMenus",
